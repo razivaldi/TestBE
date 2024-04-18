@@ -10,6 +10,8 @@ require('dotenv').config()
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// routes
 app.use(authRoute);
 app.use(productRoute);
 
@@ -17,6 +19,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+// db connection
 mongoose.set("strictQuery", true);
 mongoose
   .connect(
