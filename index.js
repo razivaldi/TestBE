@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
+const { authMiddleware } = require('./middleware/isAuth');
 const app = express();
 const port = 8000;
 require('dotenv').config()
@@ -10,9 +11,13 @@ require('dotenv').config()
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(authRoute);
-app.use(productRoute);
+app.use("/auth", authRoute);
+app.use(authMiddleware,productRoute);
 
+
+app.get('/', (req, res) => {
+  res.send("Hello World!")
+})
 mongoose.set("strictQuery", true);
 mongoose
   .connect(

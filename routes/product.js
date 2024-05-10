@@ -3,13 +3,14 @@ const router = express.Router();
 const Product = require("../models/product");
 const midtransClient = require('midtrans-client');
 const Cart = require("../models/cart");
+const { roleMiddleware } = require('../middleware/isAuth');
 
 const snap = new midtransClient.Snap({
   isProduction : false,
   serverKey : process.env.MIDTRANS_SERVER
 });
 
-router.post('/create', async (req, res) => {
+router.post('/add-product', roleMiddleware('admin'),async (req, res) => {
   const { title, price, description, images, SKU, rating, publisher, category } = req.body;
   try {
     const product = new Product({ title, price, description, images, SKU, rating, publisher, category });
